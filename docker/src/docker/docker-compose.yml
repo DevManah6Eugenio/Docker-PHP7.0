@@ -1,0 +1,38 @@
+version: "3.1" 
+services: 
+  www:
+    container_name: www_container
+    build:
+      context: .
+      dockerfile: Dockerfile-PHP
+    ports:
+      - 80:80
+    volumes:
+      - ./app/public:/var/www/html
+      - ./app:/var/www/
+    environment:
+      - APP_NAME=Laravel
+      - APP_ENV=local
+      - APP_KEY=base64:vNWHSHdpGSQ4ylaG81ONT/YKqLpi8EpHm/2Ri8148ac=
+      - APP_DEBUG=true
+      - DB_CONNECTION=mysql
+      - DB_HOST=mysql_db
+      - DB_PORT=3306
+      - DB_DATABASE=imoveis 
+      - DB_USERNAME=root 
+      - DB_PASSWORD=senha
+    networks:
+      - php_mysql_network
+  mysql_db:
+    container_name: mysql_container
+    image: mysql:5.7
+    ports: 
+      - 3306:3306
+    environment: 
+      - MYSQL_ROOT_PASSWORD=senha
+    volumes: 
+      - ./mysql_data:/var/lib/mysql
+    networks:
+      - php_mysql_network
+networks:
+  php_mysql_network:
